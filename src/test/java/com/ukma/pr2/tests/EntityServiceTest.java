@@ -1,17 +1,16 @@
 package com.ukma.pr2.tests;
 
 import com.ukma.pr2.entity.EventEntity;
+import com.ukma.pr2.entity.EventRepository;
 import com.ukma.pr2.settings.BaseTest;
 import com.ukma.pr2.settings.EntityService;
 import com.ukma.pr2.utils.Utils;
 import jakarta.persistence.EntityExistsException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +20,9 @@ public class EntityServiceTest extends BaseTest {
 
     @Autowired
     private EntityService entityService;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     @Test
     public void testSaveAndFind() {
@@ -65,23 +67,29 @@ public class EntityServiceTest extends BaseTest {
     @Test
     public void testDetach() {
         EventEntity event = Utils.getRandomEvent();
-        entityService.save(event);
+        eventRepository.saveAndFlush(event);
         entityService.detach(event);
-
         event.setName("Detached Event");
-        EventEntity foundEvent = entityService.findById(EventEntity.class, event.getId());
+        EventEntity foundEvent = eventRepository.findById(event.getId()).orElseThrow();
         assertNotEquals("Detached Event", foundEvent.getName());
     }
 
     @Test
     public void testRefresh() {
         EventEntity event = Utils.getRandomEvent();
-        entityService.save(event);
-
+        eventRepository.saveAndFlush(event);
         event.setName("Modified Name");
+        event = (EventEntity) entityService.update(event);
         entityService.updateFromDB(event);
-        EventEntity foundEvent = entityService.findById(EventEntity.class, event.getId());
+        EventEntity foundEvent = eventRepository.findById(event.getId()).orElseThrow();
         assertNotEquals("Modified Name", foundEvent.getName());
+    }
+
+    @Test
+    public void testFind() {
+        EventEntity event = Utils.getRandomEvent();
+        eventRepository.saveAndFlush(event);
+        Assertions.assertEquals(event, entityService.findById(EventEntity.class, event.getId()));
     }
 
 }

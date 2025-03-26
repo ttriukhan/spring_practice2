@@ -3,14 +3,11 @@ package com.ukma.pr2.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name="tickets")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
+@Entity
+@Table(name="tickets")
 public class TicketEntity {
 
     @Id
@@ -29,7 +26,7 @@ public class TicketEntity {
     @Column(name="is_vip")
     private Boolean isVIP;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
     private EventEntity event;
 

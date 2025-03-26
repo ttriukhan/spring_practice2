@@ -19,7 +19,7 @@ public class Utils {
         event.setDate(LocalDate.of(2025, getRandomIntInRange(4, 12), getRandomIntInRange(1, 30)));
         event.setStart_time(LocalTime.of(getRandomIntInRange(8,20), 0));
         event.setEnd_time(LocalTime.of(event.getStart_time().getHour() + 1, 0));
-        event.setPrice((float) getRandomIntInRange(100, 700));
+        event.setPrice(getRandomIntInRange(100, 700));
         return event;
     }
 

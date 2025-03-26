@@ -36,49 +36,4 @@ public class EntityService {
         entityManager.refresh(entity);
     }
 
-    /*
-    public <T> void save(T entity) {
-        try {
-            entityManager.persist(entity);
-        } catch (Exception e) {
-            throw new RuntimeException("Error saving entity: " + entity.getClass().getSimpleName(), e);
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public <T> Optional<T> findById(Class<T> entityClass, Object primaryKey) {
-        try {
-            return Optional.ofNullable(entityManager.find(entityClass, primaryKey));
-        } catch (Exception e) {
-            throw new RuntimeException("Error finding entity with ID: " + primaryKey, e);
-        }
-    }
-
-    public <T> T update(T entity) {
-        try {
-            return entityManager.merge(entity);
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating entity: " + entity.getClass().getSimpleName(), e);
-        }
-    }
-
-    public <T> void delete(T entity) {
-        try {
-            if (!entityManager.contains(entity)) {
-                entity = entityManager.merge(entity);
-            }
-            entityManager.remove(entity);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting entity: " + entity.getClass().getSimpleName(), e);
-        }
-    }
-
-    public <T> void detach(T entity) {
-        entityManager.detach(entity);
-    }
-
-    public <T> void updateFromDB(T entity) {
-        entityManager.refresh(entity);
-    }
-     */
 }

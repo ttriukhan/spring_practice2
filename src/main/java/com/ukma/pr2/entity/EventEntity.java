@@ -3,19 +3,17 @@ package com.ukma.pr2.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name="events")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
+@Entity
+@Table(name="events")
 public class EventEntity {
 
     @Id
@@ -37,9 +35,9 @@ public class EventEntity {
     @Column(name = "end_time")
     private LocalTime end_time;
 
-    @Column(name = "price")
-    private Float price;
+    @Column(name = "price", columnDefinition = "NUMERIC(10, 2)")
+    private Integer price;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TicketEntity> tickets = new ArrayList<>();;
+    @OneToMany(mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<TicketEntity> tickets = new ArrayList<>();
 }
