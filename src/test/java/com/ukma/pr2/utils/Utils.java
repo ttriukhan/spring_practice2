@@ -5,7 +5,9 @@ import com.ukma.pr2.entity.TicketEntity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,7 +18,9 @@ public class Utils {
         event.setId(getRandomIntInRange(1, 1000000));
         event.setName(getRandomString(10));
         event.setAddress(getRandomString(30));
-        event.setDate(LocalDate.of(2025, getRandomIntInRange(4, 12), getRandomIntInRange(1, 30)));
+        YearMonth yearMonth = YearMonth.of(getRandomIntInRange(2022,2025), getRandomIntInRange(1, 12));
+        int day = getRandomIntInRange(1, yearMonth.lengthOfMonth());
+        event.setDate(LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), day));
         event.setStart_time(LocalTime.of(getRandomIntInRange(8,20), 0));
         event.setEnd_time(LocalTime.of(event.getStart_time().getHour() + 1, 0));
         event.setPrice(getRandomIntInRange(100, 700));
@@ -47,5 +51,29 @@ public class Utils {
         ticket.setOwnerAge(getRandomIntInRange(17,90));
         ticket.setIsVIP(ThreadLocalRandom.current().nextBoolean());
         return ticket;
+    }
+
+    public static List<EventEntity> createEvents(int count) {
+        List<EventEntity> res = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            EventEntity event = getRandomEvent();
+            res.add(event);
+        }
+        return res;
+    }
+
+    public static List<EventEntity> createEvents(int eventsCount, int ticketsCount) {
+        List<EventEntity> events = new ArrayList<>();
+        for (int i = 0; i < eventsCount; i++) {
+            EventEntity event = getRandomEvent();
+            List<TicketEntity> tickets = new ArrayList<>();
+            for (int j = 0; j < ticketsCount; j++) {
+                TicketEntity t = getRandomTicket(event);
+                tickets.add(t);
+            }
+            event.setTickets(tickets);
+            events.add(event);
+        }
+        return events;
     }
 }
