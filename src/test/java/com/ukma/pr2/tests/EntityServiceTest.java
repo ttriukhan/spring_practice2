@@ -6,7 +6,6 @@ import com.ukma.pr2.settings.BaseTest;
 import com.ukma.pr2.settings.EntityService;
 import com.ukma.pr2.utils.Utils;
 import jakarta.persistence.EntityExistsException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -89,7 +88,7 @@ public class EntityServiceTest extends BaseTest {
     public void testFind() {
         EventEntity event = Utils.getRandomEvent();
         eventRepository.saveAndFlush(event);
-        Assertions.assertEquals(event, entityService.findById(EventEntity.class, event.getId()));
+        assertEquals(event, entityService.findById(EventEntity.class, event.getId()));
     }
 
 }

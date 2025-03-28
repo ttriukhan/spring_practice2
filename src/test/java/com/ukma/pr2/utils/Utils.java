@@ -15,9 +15,9 @@ public class Utils {
 
     public static EventEntity getRandomEvent() {
         EventEntity event = new EventEntity();
-        event.setId(getRandomIntInRange(1, 1000000));
-        event.setName(getRandomString(10));
-        event.setAddress(getRandomString(30));
+        event.setId(getRandomIntInRange(1, 1000));
+        event.setName(getRandomString(7));
+        event.setAddress(getRandomString(15));
         YearMonth yearMonth = YearMonth.of(getRandomIntInRange(2022,2025), getRandomIntInRange(1, 12));
         int day = getRandomIntInRange(1, yearMonth.lengthOfMonth());
         event.setDate(LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), day));
@@ -44,36 +44,12 @@ public class Utils {
 
     public static TicketEntity getRandomTicket(EventEntity event) {
         TicketEntity ticket = new TicketEntity();
-        ticket.setId(getRandomIntInRange(1, 1000000));
+        ticket.setId(getRandomIntInRange(1, 10000));
         ticket.setEvent(event);
-        ticket.setOwnerName(getRandomString(15));
-        ticket.setOwnerInstagram(getRandomString(15));
+        ticket.setOwnerName(getRandomString(8));
+        ticket.setOwnerInstagram(getRandomString(8));
         ticket.setOwnerAge(getRandomIntInRange(17,90));
         ticket.setIsVIP(ThreadLocalRandom.current().nextBoolean());
         return ticket;
-    }
-
-    public static List<EventEntity> createEvents(int count) {
-        List<EventEntity> res = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            EventEntity event = getRandomEvent();
-            res.add(event);
-        }
-        return res;
-    }
-
-    public static List<EventEntity> createEvents(int eventsCount, int ticketsCount) {
-        List<EventEntity> events = new ArrayList<>();
-        for (int i = 0; i < eventsCount; i++) {
-            EventEntity event = getRandomEvent();
-            List<TicketEntity> tickets = new ArrayList<>();
-            for (int j = 0; j < ticketsCount; j++) {
-                TicketEntity t = getRandomTicket(event);
-                tickets.add(t);
-            }
-            event.setTickets(tickets);
-            events.add(event);
-        }
-        return events;
     }
 }

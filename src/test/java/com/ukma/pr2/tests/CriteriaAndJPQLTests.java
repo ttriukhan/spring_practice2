@@ -36,9 +36,9 @@ public class CriteriaAndJPQLTests extends BaseTest {
     @Test
     void testDeleteAllTicketsFromEvent() {
         int eventId = 4;
-        assertNotEquals(eventRepository.findById(eventId).orElseThrow().getTickets().size(), 0);
+        assertNotEquals(0, eventRepository.findById(eventId).orElseThrow().getTickets().size());
         ticketRepository.deleteAllEventTickets(eventId);
-        assertEquals(eventRepository.findById(eventId).orElseThrow().getTickets().size(), 0);
+        assertEquals(0, eventRepository.findById(eventId).orElseThrow().getTickets().size());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class CriteriaAndJPQLTests extends BaseTest {
     void testCountEventTickets() {
         int eventId = 5;
         int actualSize = eventRepository.findById(eventId).orElseThrow().getTickets().size();
-        assertEquals(ticketRepository.countEventTickets(eventId), actualSize);
+        assertEquals(actualSize, ticketRepository.countEventTickets(eventId));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CriteriaAndJPQLTests extends BaseTest {
         Integer maxPrice = eventRepository.findMaxEventPrice();
         assertNotNull(maxPrice);
         int actualMax = eventRepository.findAll().stream().max(Comparator.comparing(EventEntity::getPrice)).orElseThrow().getPrice();
-        assertEquals(maxPrice, actualMax);
+        assertEquals(actualMax, maxPrice);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class CriteriaAndJPQLTests extends BaseTest {
         Integer minPrice = eventRepository.findMinEventPrice();
         assertNotNull(minPrice);
         int actualMin = eventRepository.findAll().stream().min(Comparator.comparing(EventEntity::getPrice)).orElseThrow().getPrice();
-        assertEquals(minPrice, actualMin);
+        assertEquals(actualMin, minPrice);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class CriteriaAndJPQLTests extends BaseTest {
         LocalDate date = LocalDate.of(2025, 8, 17);
         List<EventEntity> found = criteriaRepository.findEventsByDate(date);
         List<EventEntity> actual = eventRepository.findAll().stream().filter(event -> event.getDate().equals(date)).toList();
-        assertEquals(found, actual);
+        assertEquals(actual, found);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class CriteriaAndJPQLTests extends BaseTest {
                 .sorted(Comparator.comparing(EventEntity::getId)).toList();
         List<EventEntity> sliced = actual.subList(0, Math.min(eventNum, actual.size()));
         assertTrue(found.size() <= eventNum);
-        assertEquals(found, sliced);
+        assertEquals(sliced, found);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class CriteriaAndJPQLTests extends BaseTest {
                 .filter(event -> LocalDateTime.of(event.getDate(), event.getStart_time()).isAfter(LocalDateTime.now()))
                 .sorted(Comparator.comparing(event -> LocalDateTime.of(event.getDate(), event.getStart_time())))
                 .toList();
-        assertEquals(found, actual);
+        assertEquals(actual, found);
     }
 
     @Test
@@ -111,6 +111,6 @@ public class CriteriaAndJPQLTests extends BaseTest {
                 .filter(event -> event.getDate().getMonth().equals(LocalDate.now().getMonth()))
                 .sorted(Comparator.comparing(event -> LocalDateTime.of(event.getDate(), event.getStart_time())))
                 .toList();
-        assertEquals(found, actual);
+        assertEquals(actual, found);
     }
 }
